@@ -301,7 +301,7 @@ loadingUI.updateGameInfo("Loading...")
 loadingUI.updateStatus("Starting BagahHub Loader", 0)
 
 -- Define script groups with GitHub raw URLs
-local GITHUB_BASE = "https://raw.githubusercontent.com/Bagah-Project/bagah-hub/main"
+local GITHUB_BASE = "https://raw.githubusercontent.com/Bagah-Project/bagah-hub-public/main"
 
 local ScriptGroups = {
     [GITHUB_BASE .. "/games/evade/main.lua"] = {
