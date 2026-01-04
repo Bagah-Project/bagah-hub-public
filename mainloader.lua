@@ -128,10 +128,17 @@ local function createLoadingUI()
     }
 end
 
--- Helper: Fetch script
+-- Helper: Fetch script with strong cache busting
 local function fetchScript(url)
+    -- Strong cache busting: timestamp + random number + os.time
+    local cacheBuster = string.format("?v=%d&r=%d&t=%d", 
+        tick() * 1000, 
+        math.random(100000, 999999),
+        os.time()
+    )
+    
     local success, result = pcall(function()
-        return game:HttpGet(url .. "?v=" .. tostring(tick()), true)
+        return game:HttpGet(url .. cacheBuster, true)
     end)
     return success and result or nil
 end
@@ -196,11 +203,13 @@ local function main()
         ui.updateStatus("✅ " .. selectedGame .. " loaded!")
         ui.updateProgress(1)
         
-        -- Setup auto-reexecute
+        -- Setup auto-reexecute (DISABLED - causes bugs)
+        --[[
         local queueTeleport = syn and syn.queue_on_teleport or queue_on_teleport
         if queueTeleport then
             queueTeleport("loadstring(game:HttpGet('" .. GITHUB_BASE .. "/mainloader.lua', true))()")
         end
+        ]]
         
         -- Auto close
         task.wait(2)
