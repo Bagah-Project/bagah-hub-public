@@ -1,10 +1,6 @@
--- BagahHub Loader v2.0
--- Simplified loader with minimal UI
-
--- Configuration
 local GITHUB_BASE = "https://raw.githubusercontent.com/Bagah-Project/bagah-hub-public/main"
 
--- Game Database
+
 local SUPPORTED_GAMES = {
     ["Evade"] = {
         script = "/games/evade/main.lua",
@@ -17,15 +13,13 @@ local SUPPORTED_GAMES = {
 
 local UNIVERSAL_SCRIPT = "/universal/main.lua"
 
--- Create Simple Loading UI
+
 local function createLoadingUI()
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "BagahLoader"
     ScreenGui.DisplayOrder = 999
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Parent = game:GetService("CoreGui")
-
-    -- Main Frame
     local Frame = Instance.new("Frame")
     Frame.Size = UDim2.new(0, 320, 0, 140)
     Frame.Position = UDim2.new(0.5, -160, 0.5, -70)
@@ -36,7 +30,6 @@ local function createLoadingUI()
     Corner.CornerRadius = UDim.new(0, 8)
     Corner.Parent = Frame
 
-    -- Title
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, -20, 0, 30)
     Title.Position = UDim2.new(0, 10, 0, 10)
@@ -48,7 +41,6 @@ local function createLoadingUI()
     Title.TextXAlignment = Enum.TextXAlignment.Left
     Title.Parent = Frame
 
-    -- Status Text
     local Status = Instance.new("TextLabel")
     Status.Size = UDim2.new(1, -20, 0, 20)
     Status.Position = UDim2.new(0, 10, 0, 50)
@@ -60,7 +52,6 @@ local function createLoadingUI()
     Status.TextXAlignment = Enum.TextXAlignment.Left
     Status.Parent = Frame
 
-    -- Game Name
     local GameName = Instance.new("TextLabel")
     GameName.Size = UDim2.new(1, -20, 0, 16)
     GameName.Position = UDim2.new(0, 10, 0, 75)
@@ -72,7 +63,6 @@ local function createLoadingUI()
     GameName.TextXAlignment = Enum.TextXAlignment.Left
     GameName.Parent = Frame
 
-    -- Progress Bar Background
     local ProgressBG = Instance.new("Frame")
     ProgressBG.Size = UDim2.new(1, -20, 0, 4)
     ProgressBG.Position = UDim2.new(0, 10, 0, 110)
@@ -83,7 +73,6 @@ local function createLoadingUI()
     ProgressCorner.CornerRadius = UDim.new(0, 2)
     ProgressCorner.Parent = ProgressBG
 
-    -- Progress Bar Fill
     local Progress = Instance.new("Frame")
     Progress.Size = UDim2.new(0, 0, 1, 0)
     Progress.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
@@ -97,7 +86,6 @@ local function createLoadingUI()
     ProgressBG.Parent = Frame
     Frame.Parent = ScreenGui
 
-    -- Update functions
     local function updateStatus(text)
         Status.Text = text
     end
@@ -128,9 +116,7 @@ local function createLoadingUI()
     }
 end
 
--- Helper: Fetch script with strong cache busting
 local function fetchScript(url)
-    -- Strong cache busting: timestamp + random number + os.time
     local cacheBuster = string.format("?v=%d&r=%d&t=%d", 
         tick() * 1000, 
         math.random(100000, 999999),
@@ -143,11 +129,9 @@ local function fetchScript(url)
     return success and result or nil
 end
 
--- Main Logic
+
 local function main()
     local ui = createLoadingUI()
-    
-    -- Detect game
     ui.updateStatus("Detecting game...")
     ui.updateProgress(0.2)
     task.wait(0.3)
@@ -174,7 +158,6 @@ local function main()
         ui.updateGame("Game: Universal Script")
     end
     
-    -- Fetch
     ui.updateStatus("Fetching script...")
     ui.updateProgress(0.4)
     task.wait(0.2)
@@ -190,7 +173,6 @@ local function main()
         return
     end
     
-    -- Execute
     ui.updateStatus("Loading " .. selectedGame .. "...")
     ui.updateProgress(0.7)
     task.wait(0.2)
@@ -211,7 +193,6 @@ local function main()
         end
         ]]
         
-        -- Auto close
         task.wait(2)
         ui.close()
         
@@ -228,5 +209,5 @@ local function main()
     end
 end
 
--- Run
+
 main()
