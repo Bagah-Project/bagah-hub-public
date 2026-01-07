@@ -1,17 +1,13 @@
-if script:GetAttribute("FPSCounterExecuted") then
+-- Check if already exists
+local CoreGui = game:GetService("CoreGui")
+if CoreGui:FindFirstChild("FPSCounter") then
     return
 end
-script:SetAttribute("FPSCounterExecuted", true)
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
 local Stats = game:GetService("Stats")
-local CoreGui = game:GetService("CoreGui")
-
-if CoreGui:FindFirstChild("FPSCounter") then
-    return
-end
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "FPSCounter"
