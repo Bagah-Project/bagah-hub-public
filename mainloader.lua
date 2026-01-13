@@ -5,8 +5,14 @@ local SUPPORTED_GAMES = {
     ["Evade"] = {
         script = "/games/evade/main.lua",
         placeIds = {
-            10324346056, 9872472334, 10662542523, 10324347967,
-            121271605799901, 10808838353, 11353528705, 99214917572799
+            10324346056, -- Big Team
+            9872472334,  -- Evade
+            10662542523, -- Casual
+            10324347967, -- Social Space
+            121271605799901, -- Player Nextbots
+            10808838353, -- VC Only
+            11353528705, -- Pro
+            99214917572799, -- Custom Servers
         }
     },
 }
