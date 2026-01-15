@@ -5,15 +5,19 @@ local SUPPORTED_GAMES = {
     ["Evade"] = {
         script = "/games/evade/main.lua",
         placeIds = {
-            10324346056, -- Big Team
-            9872472334,  -- Evade
-            10662542523, -- Casual
-            10324347967, -- Social Space
+            10324346056,     -- Big Team
+            9872472334,      -- Evade
+            10662542523,     -- Casual
+            10324347967,     -- Social Space
             121271605799901, -- Player Nextbots
-            10808838353, -- VC Only
-            11353528705, -- Pro
-            99214917572799, -- Custom Servers
+            10808838353,     -- VC Only
+            11353528705,     -- Pro
+            99214917572799,  -- Custom Servers
         }
+    },
+    ["Evade Legacy"] = {
+        script = "/games/evadelegacy/main.lua",
+        placeIds = { 96537472072550 }
     },
 }
 
@@ -31,7 +35,7 @@ local function createLoadingUI()
     Frame.Position = UDim2.new(0.5, -160, 0.5, -70)
     Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
     Frame.BorderSizePixel = 0
-    
+
     local Corner = Instance.new("UICorner")
     Corner.CornerRadius = UDim.new(0, 8)
     Corner.Parent = Frame
@@ -74,7 +78,7 @@ local function createLoadingUI()
     ProgressBG.Position = UDim2.new(0, 10, 0, 110)
     ProgressBG.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
     ProgressBG.BorderSizePixel = 0
-    
+
     local ProgressCorner = Instance.new("UICorner")
     ProgressCorner.CornerRadius = UDim.new(0, 2)
     ProgressCorner.Parent = ProgressBG
@@ -83,7 +87,7 @@ local function createLoadingUI()
     Progress.Size = UDim2.new(0, 0, 1, 0)
     Progress.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
     Progress.BorderSizePixel = 0
-    
+
     local FillCorner = Instance.new("UICorner")
     FillCorner.CornerRadius = UDim.new(0, 2)
     FillCorner.Parent = Progress
@@ -123,12 +127,12 @@ local function createLoadingUI()
 end
 
 local function fetchScript(url)
-    local cacheBuster = string.format("?v=%d&r=%d&t=%d", 
-        tick() * 1000, 
+    local cacheBuster = string.format("?v=%d&r=%d&t=%d",
+        tick() * 1000,
         math.random(100000, 999999),
         os.time()
     )
-    
+
     local success, result = pcall(function()
         return game:HttpGet(url .. cacheBuster, true)
     end)
@@ -141,11 +145,11 @@ local function main()
     ui.updateStatus("Detecting game...")
     ui.updateProgress(0.2)
     task.wait(0.3)
-    
+
     local currentPlaceId = game.PlaceId
     local selectedGame = nil
     local scriptPath = nil
-    
+
     for gameName, gameData in pairs(SUPPORTED_GAMES) do
         for _, placeId in ipairs(gameData.placeIds) do
             if currentPlaceId == placeId then
@@ -157,20 +161,20 @@ local function main()
         end
         if selectedGame then break end
     end
-    
+
     if not selectedGame then
         selectedGame = "Universal"
         scriptPath = UNIVERSAL_SCRIPT
         ui.updateGame("Game: Universal Script")
     end
-    
+
     ui.updateStatus("Fetching script...")
     ui.updateProgress(0.4)
     task.wait(0.2)
-    
+
     local scriptUrl = GITHUB_BASE .. scriptPath
     local scriptContent = fetchScript(scriptUrl)
-    
+
     if not scriptContent then
         ui.updateStatus("❌ Failed to fetch script")
         ui.updateGame("Check your connection")
@@ -178,19 +182,19 @@ local function main()
         ui.close()
         return
     end
-    
+
     ui.updateStatus("Loading " .. selectedGame .. "...")
     ui.updateProgress(0.7)
     task.wait(0.2)
-    
+
     local success, err = pcall(function()
         loadstring(scriptContent)()
     end)
-    
+
     if success then
         ui.updateStatus("✅ " .. selectedGame .. " loaded!")
         ui.updateProgress(1)
-        
+
         -- Setup auto-reexecute (DISABLED - causes bugs)
         --[[
         local queueTeleport = syn and syn.queue_on_teleport or queue_on_teleport
@@ -198,10 +202,10 @@ local function main()
             queueTeleport("loadstring(game:HttpGet('" .. GITHUB_BASE .. "/mainloader.lua', true))()")
         end
         ]]
-        
+
         task.wait(2)
         ui.close()
-        
+
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "BagahHub",
             Text = selectedGame .. " loaded successfully!",
