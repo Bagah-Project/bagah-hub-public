@@ -4,6 +4,11 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local existingGui = playerGui:FindFirstChild("BagahHub_FPSDisplay")
+if existingGui then
+    existingGui:Destroy()
+end
+
 -- Configuration
 local DRAG_KEY = Enum.UserInputType.MouseButton1
 local UPDATE_RATE = 0.5
