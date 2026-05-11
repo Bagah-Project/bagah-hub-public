@@ -25,16 +25,17 @@ local SUPPORTED_GAMES = {
 local UNIVERSAL_SCRIPT = "/universal/main.lua"
 
 local function createLoaderUI()
-    local CoreGui = game:GetService("CoreGui")
+    local Players = game:GetService("Players")
     local TweenService = game:GetService("TweenService")
     local UserInputService = game:GetService("UserInputService")
+    local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "BagahHubLoader"
     ScreenGui.DisplayOrder = 999
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.ResetOnSpawn = false
-    ScreenGui.Parent = CoreGui
+    ScreenGui.Parent = PlayerGui
 
     local function createCorner(radius)
         local c = Instance.new("UICorner")
@@ -315,13 +316,9 @@ local function createLoaderUI()
     setupCardHover(TpCard, TpIcon, TpGradient)
 
     local function updateProgress(percent)
-        ProgressFill:TweenSize(
-            UDim2.new(percent, 0, 1, 0),
-            Enum.EasingDirection.Out,
-            Enum.EasingStyle.Quad,
-            0.3,
-            true
-        )
+        TweenService:Create(ProgressFill, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Size = UDim2.new(percent, 0, 1, 0)
+        }):Play()
     end
 
     local function showLoading()
